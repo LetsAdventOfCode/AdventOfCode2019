@@ -18,13 +18,11 @@ function recursiveIntProgram(rows, val1, val2){
 	rows[2] = val2;
 	var array = rows.slice() 
 	intProgram(array);
-	if(array[0] > 19690720){
+	if(array[0] > 19690720)
 		return false;
-	}
-	if(array[0] == 19690720){
-		return true;
-	}
-	return recursiveIntProgram(rows, val1 + 1, val2) || recursiveIntProgram(rows, val1, val2 + 1) || recursiveIntProgram(rows, val1 + 1, val2 + 1);	
+	return array[0] == 19690720 || recursiveIntProgram(rows, val1 + 1, val2) 
+								|| recursiveIntProgram(rows, val1, val2 + 1) 
+								|| recursiveIntProgram(rows, val1 + 1, val2 + 1);	
 }
 
 function intProgram(rows){

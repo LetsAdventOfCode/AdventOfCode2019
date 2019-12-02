@@ -2,12 +2,142 @@
 <head>
 </head>
 <body>
-    <textarea id="input"></textarea>
-    <button onclick="solve()">Solve</button><br />
-	Solution problem 1
-    <h2 id="solution"></h2>
-	Solution problem 2
-    <h2 id="solution2"></h2>
+	<a href=""  >Advent of Code 2019</a>
+	<table>
+		<td>
+			Input here<br>
+			<textarea id="input" rows="50" columns="20"></textarea>
+			<button onclick="solve()">Solve</button><br />
+		</td>
+		<td>
+			Solution problem 1
+			<h2 id="solution"></h2>
+			Solution problem 2
+			<h2 id="solution2"></h2>
+		</td>
+	</table>
     <script src="01.js"></script>
 </body>
 </html>
+
+
+<style>
+	body {
+	  background: #0f0f23; /*337 x 5*/
+	  color: #cccccc;
+	  font-family: "Source Code Pro", monospace;
+	  font-size: 14pt;
+	  min-width: 60em;
+	}
+	img { border:0; }
+	a { outline:0; }
+	main, figure, figcaption { display:block; }
+	pre, code { font-family: "Source Code Pro", monospace; }
+	header, main {
+	  -webkit-text-size-adjust: none;
+	}
+
+	a {
+	  text-decoration: none;
+	  color: #009900;
+	}
+	a:hover, a:focus {
+	  color: #99ff99;
+	}
+	h1, h2 {
+	  font-size: 1em;
+	  font-weight: normal;
+	}
+	
+	pre.wrap {
+	  max-width: 100%;
+	  white-space: pre-wrap;
+	}
+
+	.quiet {
+	  opacity: .5;
+	}
+	p.wrap {
+	  width: 45em;
+	}
+
+	header {
+	  white-space: nowrap;
+	  cursor: default;
+	  z-index: 100;
+	  margin-bottom: 2em;
+	}
+	header h1 {
+	  display: inline-block;
+	  margin: 0;
+	  padding-right: 1em;
+	}
+	header h1 a, header h1 span {
+	  display: inline-block;
+	  text-decoration: none;
+	  color: #00cc00;
+	  text-shadow: 0 0 2px #00cc00, 0 0 5px #00cc00;
+	}
+	header h1 a:hover, header h1 a:focus {
+	  color: #99ff99;
+	  text-shadow: 0 0 2px #99ff99, 0 0 5px #99ff99;
+	}
+	header h1.title-event .title-event-wrap {
+	  opacity: .33;
+	  white-space: pre;
+	}
+	header .user {
+	  display: inline-block;
+	  padding-left: 1em;
+	}
+	header .user .star-count {
+	  color: #ffff66;
+	}
+	header nav {
+	  display: inline-block;
+	}
+	header nav ul {
+	  list-style-type: none;
+	  padding: 0;
+	  margin: 0;
+	  display: inline-block;
+	}
+	header nav li {
+	  display: inline-block;
+	  padding: 0 .6em;
+	}
+	header nav a {
+	  display: inline-block;
+	  text-decoration: none;
+	  outline: none;
+	}
+
+	input[type="text"], textarea {
+	  background: transparent;
+	  color: inherit;
+	  border: 1px solid #666666;
+	  background: #10101a;
+	  padding: 0 2px;
+	  font-family: inherit;
+	  font-size: inherit;
+	  margin: 0;
+	}
+	textarea {
+	  vertical-align: top;
+	}
+
+	label img {
+	  vertical-align: bottom;
+	  position: relative;
+	  top: -3px;
+	  margin-right: .3em;
+	}
+
+	input[type="submit"]:hover, input[type="submit"]:focus {
+	  color: #99ff99;
+	}
+	*::-moz-focus-inner {
+	  padding: 0;
+	  border: 0
+	}
+</style>

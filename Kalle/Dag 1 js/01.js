@@ -1,19 +1,17 @@
 function solve() {
-    var input = document.getElementById("input").value;
-    var rows = input.split("\n");
+    let input = document.getElementById("input").value;
+    let rows = input.split("\n").map(num => parseInt(num));
 	
-	var sum = rows.map(calculateFuelRequirement).reduce((a,b) => a + b, 0);
-	var recursiveSum = rows.map(calculateFuelRequirementRecursive).reduce((a,b) => a + b, 0);
+	let sum = rows.map(calculateFuelRequirement).reduce((a,b) => a + b, 0);
+	let recursiveSum = rows.map(calculateFuelRequirementRecursive).reduce((a,b) => a + b, 0);
 	
     document.getElementById("solution").innerHTML = sum;
 	document.getElementById("solution2").innerHTML = recursiveSum;
 }
 
-function calculateFuelRequirement(mass) {
-	return Math.floor((mass/3))-2;
-}
-
 function calculateFuelRequirementRecursive(mass) {
-	var fuelRequirement = calculateFuelRequirement(mass);
+	let fuelRequirement = calculateFuelRequirement(mass);
 	return fuelRequirement <= 0 ? 0 : fuelRequirement + calculateFuelRequirementRecursive(fuelRequirement);
 }
+
+calculateFuelRequirement = (mass) => Math.floor((mass/3))-2;
