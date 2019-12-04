@@ -3,17 +3,13 @@ var startPos = 5000;
 function solve() {
     let instructions = document.getElementById("input").value.split("\n").map(str => str.split(","));
     let matrix = createMatrix();
-	let foundCrossings = [];
-	runWires(instructions, matrix, foundCrossings);
-
-	let shortest = matrixSize;
-	for(var i = 0; i < foundCrossings.length; i++){
-		shortest = Math.min((Math.abs(foundCrossings[i].x - startPos) + Math.abs(foundCrossings[i].y - startPos)), shortest);
-	}
+	let result = { shortest: 999999, shortestWireShortCircuit: 99999999, shortCircuits: [], stepsDict: [] };
+	runWires(instructions, matrix, result);
+	
 	var ctx = document.getElementById('canvas').getContext('2d');
 	drawMatrix(matrix, ctx);
-    document.getElementById("solution").innerHTML = shortest;
-	// document.getElementById("solution2").innerHTML = array[1] + " " + array[2];
+    document.getElementById("solution").innerHTML = result.shortest;
+	document.getElementById("solution2").innerHTML = result.shortestWireShortCircuit;
 }
 
 function drawMatrix(matrix, context){
@@ -43,39 +39,54 @@ function cellColor(val) {
     return 'white';
 }
 
-function runWires(instructions, matrix, foundCrossings){
+function runWires(instructions, matrix, result){
 	var currentState = {
 		"first": { "x": startPos, "y": startPos, "xdir": 0, "ydir": 0, "steps": 0, "tag": 1 },
 		"second": { "x": startPos, "y": startPos, "xdir": 0, "ydir": 0, "steps": 0, "tag": 2 }
 	}
 	
 	matrix[startPos][startPos] = 0;
+	var usedSteps = { firstSteps: 0, secondSteps: 0 }
 	for	(var i = 0; i < instructions[0].length; i++){
-		performInstructions(currentState, instructions[0][i], instructions[1][i], matrix, foundCrossings)
+		performInstructions(currentState, instructions[0][i], instructions[1][i], matrix, result, usedSteps)
 	}
 }
 
-function performInstructions(currentState, firstInstruction, secondInstruction, matrix, foundCrossings){
+function performInstructions(currentState, firstInstruction, secondInstruction, matrix, result, usedSteps){
 	setDirection(currentState.first, firstInstruction);
 	setDirection(currentState.second, secondInstruction);
 	
 	while(Math.max(currentState.first.steps, currentState.second.steps) > 0){
-		step(currentState.first, matrix, foundCrossings);
-		step(currentState.second, matrix, foundCrossings);
+		step(currentState.first, matrix, result, usedSteps);
+		step(currentState.second, matrix, result, usedSteps);
 	}
 }
 
-function step(state, matrix, foundCrossings){
+function step(state, matrix, result, usedSteps){
 	if(state.steps > 0){
+		usedSteps.firstSteps += state.tag == 1 ? 1 : 0;
+		usedSteps.secondSteps += state.tag == 2 ? 1 : 0;
 		state.x += state.xdir;
 		state.y += state.ydir;
-		
+		if(!result.stepsDict[state.x +  ',' + state.y]) {
+			result.stepsDict[state.x +  ',' + state.y] = { firstSteps: state.tag == 1 ? usedSteps.firstSteps : 0, secondSteps: state.tag == 2 ? usedSteps.secondSteps : 0 };
+		}
+		else if(state.tag == 1){
+			result.stepsDict[state.x +  ',' + state.y].firstSteps = usedSteps.firstSteps;
+		}
+		else if(state.tag == 2){
+			result.stepsDict[state.x +  ',' + state.y].secondSteps = usedSteps.secondSteps;
+		}
 		if(!matrix[state.x][state.y] || matrix[state.x][state.y] == state.tag)
 			matrix[state.x][state.y] = state.tag;
 		else{
 			matrix[state.x][state.y] = 3
-			foundCrossings.push( { "x": state.x, "y": state.y })
-		}			
+			let shortCircuit = { "x": state.x, "y": state.y, usedSteps: result.stepsDict[state.x + ',' + state.y] };
+			shortCircuit.manhattanDistance = manhattanDistance(startPos, startPos, state.x, state.y);
+			result.shortCircuits.push(shortCircuit);
+			result.shortest = Math.min(shortCircuit.manhattanDistance, result.shortest);
+			result.shortestWireShortCircuit = Math.min((shortCircuit.usedSteps.firstSteps + shortCircuit.usedSteps.secondSteps), result.shortestWireShortCircuit);
+		}
 		state.steps--;
 	}
 }
@@ -107,9 +118,13 @@ function resetInstruction(state){
 	state.steps = 0;
 }
 
+manhattanDistance = (a, b, x, y) => {
+	return (Math.abs(a - x) + Math.abs(b - y));
+}
+
 createMatrix = () =>  {
 	let matrix = [];
-	for(var i=0; i < matrixSize; i++) {
+	for(let i = 0; i < matrixSize; i++) {
 		matrix[i] = new Array(matrixSize);
 	}
 	return matrix;
