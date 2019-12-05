@@ -1,30 +1,41 @@
 function solve() {
     let passwordLimits = document.getElementById("input").value.split("-").map(num => parseInt(num));
     
-	let result = [];
-	bruteforce(passwordLimits, result);
+	let dumbPasswords = [];
+	let dumberPasswords = [];
+	bruteforce(passwordLimits, dumbPasswords, dumberPasswords);
 	
-    document.getElementById("solution").innerHTML = result.shortest;
-	document.getElementById("solution2").innerHTML = result.shortestWireShortCircuit;
+    document.getElementById("solution").innerHTML = dumbPasswords.length;
+	document.getElementById("solution2").innerHTML = dumberPasswords.length;
 }
 
-function bruteforce(passwordLimits, result){
+function bruteforce(passwordLimits, dumbPasswords, dumberPasswords){
 	for(let i = passwordLimits[0]; i < passwordLimits[1]; i++) {
-		if(isValidPassword(i + '') && onlyIncresing(i + '')){
-			result.push(i);
+		let password = i + '';
+		let dupes = {};
+		if(isPasswordValid(password, dupes) && areYouSure(password)){
+			dumbPasswords.push(i);
+			
+			if(areYouReallyThough(password, dupes.dupes) ){
+				dumberPasswords.push(i);
+			}
 		}
 	}
 }
 
-function isValidPassword(password) {
-	var dupesRegexp = /(.{1}){1}\1/g;
-	var tripletsRegexp = /([0-9])\1\1/g;
-	var dupes = password.match(dupesRegexp);
-	var triplets = password.match(tripletsRegexp);
+function isPasswordValid(password, dupes) {
+	let regex = /(.{1}){1}\1/g;
+	dupes.dupes = password.match(regex);
+	return dupes.dupes;
+}
+
+function areYouReallyThough(password, dupes){
+	let tripletsRegexp = /([0-9])\1\1/g;
+	let triplets = password.match(tripletsRegexp);
 	return dupes && dupes.some(dupe => !triplets || triplets.every(triple => dupe[1] != triple[1]))
 }
 
-function onlyIncresing(password){
+function areYouSure(password){
 	for(let i = 0; i < password.length - 1; i++)
 		if(password[i] > password[i+1]) return false;
 	return true;
