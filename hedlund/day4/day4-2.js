@@ -1,0 +1,29 @@
+function findPasswords(startNumber, endnumber) {
+    let validPasswords = 0;
+    for (let password = startNumber; password <= endnumber; password++) {
+        let passwordArray = password.toString().split('');
+        let adjacentNumbers = false;
+        for (let i = 0; i < passwordArray.length; i++) {
+            if (i === 0) continue;
+
+            if (passwordArray[i] < passwordArray[i - 1] ) {
+                break;
+            }
+
+            if (passwordArray[i] === passwordArray[i - 1]) {
+                if (passwordArray[i] !== passwordArray[i + 1] && passwordArray[i] !== passwordArray[i - 2]) {
+                    adjacentNumbers = true;
+                }
+            }
+
+            if (i === (passwordArray.length - 1) && adjacentNumbers) {
+                console.log('valid password detected', password);
+                validPasswords++;
+            }
+        }
+    }
+
+    console.log('Valid passwords:', validPasswords);
+}
+
+findPasswords(245182,790572);
