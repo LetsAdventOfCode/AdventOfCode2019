@@ -23,6 +23,7 @@ function drawMatrix(matrix, context){
         });
     });
 }
+
 function cellColor(val) {
     if(val == 1){
         return 'red';
