@@ -1,39 +1,60 @@
 function solve() {
-    var rows = document.getElementById("input").value.split(",").map(num => parseInt(num));
-
-    rows[1] = 12;
-    rows[2] = 2;
-
-    var runOnceArray = intProgram(rows.slice());
-
-    var array = rows.slice();
-    recursiveIntProgram(array, 0, 0);
-    document.getElementById("solution").innerHTML = runOnceArray[0];
-    document.getElementById("solution2").innerHTML = array[1] + " " + array[2];
-}
-
-function recursiveIntProgram(rows, val1, val2) {
-    rows[1] = val1;
-    rows[2] = val2;
-    var array = [...rows];
-    intProgram(array);
-    if (array[0] > 19690720)
-        return false;
-    return array[0] === 19690720 || recursiveIntProgram(rows, val1 + 1, val2) || recursiveIntProgram(rows, val1, val2 + 1);
-}
-
-function intProgram(rows) {
-    for (var i = 0; i < rows.length - 4; i += 4) {
-        if (rows[i] === 99)
-            break;
-        doInstructions(rows, rows[i], rows[i + 1], rows[i + 2], rows[i + 3]);
+    let map = document.getElementById("input").value.split("\n");
+    let dict = sortMap(map);
+    let orbits = 0;
+    for (let key in dict) {
+        orbits += countOrbits(dict[key]);
     }
-    return rows;
+    //let stepsToSanta = countStepsToSanta(dict['YOU']);
+    document.getElementById("solution").innerHTML = orbits;
 }
 
-function doInstructions(array, operator, leftIndex, rightIndex, solutionIndex) {
-    if (operator === 1)
-        array[solutionIndex] = array[leftIndex] + array[rightIndex];
-    else if (operator === 2)
-        array[solutionIndex] = array[leftIndex] * array[rightIndex];
+function countOrbits(orbitMap) {
+    if (orbitMap.children.length === 0)
+        return 0;
+    return orbitMap.children.length + orbitMap.children.map(c => countOrbits(c)).reduce((acc, cur) => acc + cur);
+}
+
+function sortMap(map) {
+    let dict = [];
+    for (let i = 0; i < map.length; i++) {
+        let spaceObjects = map[i].split(')');
+        let existingNode = dict[spaceObjects[0]];
+        let existingChildNode = dict[spaceObjects[1]];
+        if (existingNode) {
+            if (!existingChildNode) {
+                existingChildNode = { id: spaceObjects[1], children: [], parent: existingNode };
+            }
+            existingNode.children.push(existingChildNode);
+            dict[existingChildNode.id] = existingChildNode;
+        }
+        else {
+            let node = { id: spaceObjects[0], children: [] };
+            if (!existingChildNode) {
+                existingChildNode = { id: spaceObjects[1], children: [], parent: node };
+            }
+            node.children.push(existingChildNode);
+            dict[node.id] = node;
+            dict[existingChildNode.id] = existingChildNode;
+        }
+    }
+    return dict;
+}
+
+function countStepsToSanta(node) {
+    if (node.id === 'SAN') {
+        return 0;
+    }
+    else if (checkChilds(node.children)) {
+        return 0;
+    }
+    else {
+        return 1 + countStepsToSanta(node.parent);
+    }
+}
+
+function checkChildren(nodes) {
+    for (let node of nodes) {
+        return node.id === 'SAN';
+    }
 }
