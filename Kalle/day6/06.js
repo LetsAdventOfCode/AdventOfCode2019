@@ -5,7 +5,7 @@ function solve() {
     for (let key in dict) {
         orbits += countOrbits(dict[key]);
     }
-    //let stepsToSanta = countStepsToSanta(dict['YOU']);
+    let stepsToSanta = countStepsToSanta(dict['YOU'], []);
     document.getElementById("solution").innerHTML = orbits;
 }
 
@@ -41,20 +41,16 @@ function sortMap(map) {
     return dict;
 }
 
-function countStepsToSanta(node) {
-    if (node.id === 'SAN') {
-        return 0;
-    }
-    else if (checkChilds(node.children)) {
-        return 0;
+function countStepsToSanta(node, path) {
+    if (node.children.some(c => c.id === 'SAN')) {
+        return path;
     }
     else {
-        return 1 + countStepsToSanta(node.parent);
-    }
-}
+        let queue = [];
+        queue.push(node.parent);
+        for (let child in node.children) {
+            queue.push(child);
+        }
 
-function checkChildren(nodes) {
-    for (let node of nodes) {
-        return node.id === 'SAN';
     }
 }
