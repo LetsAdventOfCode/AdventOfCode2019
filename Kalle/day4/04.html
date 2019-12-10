@@ -1,24 +1,53 @@
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="../styles.css">
+    <link rel="stylesheet" type="text/css" href="../styles.css">
 </head>
 <body>
     <a href="../index.html">Advent of Code 2019</a>
-	<h1>Day 4: Secure Container</h1>
-	<div>
-		Input here<br>
-		<textarea id="input" rows="40" columns="20">145852-616942</textarea>
-		<button onclick="solve()">Solve</button><br />
-	</div>
-	
-	<div>
-		Solution problem 1
-		<h2 id="solution"></h2>
-	</div>
-	<div>
-		Solution problem 2
-		<h2 id="solution2"></h2>
-	</div>
+    <h1>Day 4: Secure Container</h1>
+    <div style="float:left;">
+        Input here<br>
+        <textarea id="input" rows="10" columns="20">145852-616942</textarea>
+        <button onclick="solve(); solve2()">Solve</button><br />
+
+    </div>
+    <div style="float:left; border: 1px dashed; margin: 10px; padding: 10px;">
+        <div>
+            Solution problem 1
+            <h3 id="solution"></h3>
+        </div>
+        <div>
+            Solution problem 2
+            <h3 id="solution2"></h3>
+        </div>
+        <div>
+            Time smart force
+            <h3 id="time"></h3>
+        </div>
+        <div>
+            Evaluated passwords
+            <h3 id="smartPasswords"></h3>
+        </div>
+    </div>
+    <div style="float:left; border: 1px dashed; margin: 10px; padding: 10px;">
+        <div>
+            Solution problem 1
+            <h3 id="solution3"></h3>
+        </div>
+        <div>
+            Solution problem 2
+            <h3 id="solution4"></h3>
+        </div>
+        <div>
+            Time brute force
+            <h3 id="time2"></h3>
+        </div>
+        <div>
+            Evaluated passwords
+            <h3 id="dumbPasswords"></h3>
+        </div>
+    </div>
     <script src="04.js"></script>
+    <script src="04b.js"></script>
 </body>
 </html>
