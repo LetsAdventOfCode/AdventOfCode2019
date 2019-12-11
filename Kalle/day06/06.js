@@ -5,8 +5,9 @@ function solve() {
     for (let key in dict) {
         orbits += countOrbits(dict[key]);
     }
-    //let stepsToSanta = countStepsToSanta(dict['YOU']);
+    let stepsToSanta = countStepsToSanta(dict['YOU'], [], {});
     document.getElementById("solution").innerHTML = orbits;
+    document.getElementById("solution2").innerHTML = stepsToSanta.length - 2;
 }
 
 function countOrbits(orbitMap) {
@@ -23,8 +24,9 @@ function sortMap(map) {
         let existingChildNode = dict[spaceObjects[1]];
         if (existingNode) {
             if (!existingChildNode) {
-                existingChildNode = { id: spaceObjects[1], children: [], parent: existingNode };
+                existingChildNode = { id: spaceObjects[1], children: [] };
             }
+            existingChildNode.parent = existingNode;
             existingNode.children.push(existingChildNode);
             dict[existingChildNode.id] = existingChildNode;
         }
@@ -32,6 +34,9 @@ function sortMap(map) {
             let node = { id: spaceObjects[0], children: [] };
             if (!existingChildNode) {
                 existingChildNode = { id: spaceObjects[1], children: [], parent: node };
+            }
+            else if (!existingChildNode.parent) {
+                existingChildNode.parent = node;
             }
             node.children.push(existingChildNode);
             dict[node.id] = node;
@@ -41,20 +46,28 @@ function sortMap(map) {
     return dict;
 }
 
-function countStepsToSanta(node) {
-    if (node.id === 'SAN') {
-        return 0;
-    }
-    else if (checkChilds(node.children)) {
-        return 0;
+function countStepsToSanta(node, path, visited) {
+    visited[node.id] = node.id;
+    path.push(node);
+    if (node.children.some(c => c.id === 'SAN')) {
+        return path;
     }
     else {
-        return 1 + countStepsToSanta(node.parent);
+        let parent = !node.parent || visited[node.parent.id] ? null : countStepsToSanta(node.parent, path.slice(), copyDict(visited));
+        let children = node.children.map(c => visited[c.id] ? null : countStepsToSanta(c, path.slice(), copyDict(visited)));
+        for (let child of children) {
+            if (child) {
+                return child;
+            }
+        }
+        return parent || null;
     }
 }
 
-function checkChildren(nodes) {
-    for (let node of nodes) {
-        return node.id === 'SAN';
+function copyDict(dict) {
+    var copy = {};
+    for (var key in dict) {
+        copy[key] = dict[key];
     }
+    return copy;
 }
