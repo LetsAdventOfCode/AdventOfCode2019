@@ -1,40 +1,29 @@
 function solve() {
-    let width = document.getElementById("width").value;
-    let height = document.getElementById("height").value;
-    let input = document.getElementById("input").value;
-    var ctx = document.getElementById('canvas').getContext('2d');
-    let layers = [];
-    let layerSize = width * height;
+    let asteroidBelt = document.getElementById("input").value.split('\n');
 
-    let lowest = Number.MAX_SAFE_INTEGER;
-    let currentProduct = 0;
-
-    for (let i = 0; i < input.length; i) {
-        let layer = input.slice(i, i + layerSize);
-        let zeroes = layer.match(/[0]/g).length;
-        if (zeroes < lowest) {
-            currentProduct = layer.match(/[1]/g).length * layer.match(/[2]/g).length;
-            lowest = zeroes;
+    let counter = 0;
+    for (var y = 0; y < asteroidBelt.length; y++) {
+        for (var x = 0; x < asteroidBelt[y].length; x++) {
+            if (asteroidBelt[y][x] === '#') {
+                Math.max(currentAsteroidSightings, scanAsteroids(x, y, asteroidBelt));
+                
+            }
         }
-        layers.push(layer);
-        i += layerSize;
     }
+    //Math.atan2(0, 0) * (180 / Math.PI)
+    //let a = 3;
+    //let b = 4;
 
-    
+    //let hypotenuse = Math.hypot(b, a);
+
+    //let angle = toDegrees(Math.asin(a / hypotenuse));
+
+    //b = 2;
+    //hypotenuse = b * Math.tan(Math.asin(a / hypotenuse));
+
     document.getElementById("solution").innerHTML = currentProduct;
-    drawLayers(layers, ctx, width, height);
 }
 
-function drawLayers(layers, context, width, height) {
-    var cellWidth = canvas.width / width;
-    var cellHeight = canvas.height / height;
+function scanAsteroids(x, y, asteroidBelt) {
 
-    for (var i = 0; i < layers[0].length; i++) {
-        context.fillStyle = cellColor(layers, 0, i);
-        context.fillRect((i % width) * cellWidth, Math.floor(i / width) * cellHeight, cellWidth, cellHeight);
-    }
-}
-
-function cellColor(layers, layerIndex, index) {
-    return layers[layerIndex][index] === '2' ? cellColor(layers, layerIndex + 1, index) : layers[layerIndex][index] === '1' ? 'white' : 'black';
 }

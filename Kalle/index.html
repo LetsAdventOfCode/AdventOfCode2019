@@ -119,7 +119,7 @@
                     <input type='checkbox' id="check12" />
                     <div class='door'>
                         <div class='front'>12</div>
-                        <div class='back'><a href="day12\12.html">Day 12: N/A</a></div>
+                        <div class='back'><a href="day12\12.html">Day 12: The N-Body Problem</a></div>
                     </div>
                 </label>
             </div>
@@ -253,7 +253,7 @@
             mX = -100,
             mY = -100
 
-        canvas.width = window.innerWidth;
+        canvas.width = window.innerWidth - 50;
         canvas.height = window.innerHeight;
 
         function snow() {
@@ -344,12 +344,12 @@
 
         canvas.addEventListener("mousemove", function (e) {
             mX = e.clientX,
-                mY = e.clientY
+            mY = e.clientY
         });
 
         window.addEventListener("resize", function () {
             canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.height = window.innerHeight - 100;
         })
 
         init();
