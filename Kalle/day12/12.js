@@ -98,20 +98,3 @@ function calcEnergies(moon) {
 function copyMoonState(moon) {
     return { position: { x: moon.position.x, y: moon.position.y, z: moon.position.z }, velocity: { x: moon.velocity.x, y: moon.velocity.y, z: moon.velocity.z }, potentialEnergy: moon.potentialEnergy, kineticEnergy: moon.kineticEnergy, totalEnergy: moon.totalEnergy };
 }
-
-function isRepeatedState(moonStates, previousMoonStates) {
-    return previousMoonStates.some(pm => isMoonStatesSame(moonStates, pm));
-}
-
-function isMoonStatesSame(moonStates, previousMoonStates) {
-    let isRepeated = true;
-    for (let i in moonStates) {
-        isRepeated = isRepeated && isMoonStateSame(moonStates[i], previousMoonStates[i]);
-    }
-    return isRepeated;
-}
-
-function isMoonStateSame(moonState, previousMoonState) {
-    return moonState.position.x === previousMoonState.position.x && moonState.position.y === previousMoonState.position.y && moonState.position.z === previousMoonState.position.z &&
-        moonState.velocity.x === previousMoonState.velocity.x && moonState.velocity.y === previousMoonState.velocity.y && moonState.velocity.z === previousMoonState.velocity.z;
-}
