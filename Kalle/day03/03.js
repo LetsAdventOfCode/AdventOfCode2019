@@ -35,7 +35,7 @@ function cellColor(val) {
         return 'yellow';
     }
     if (val === 0) {
-        return 'blue'
+        return 'blue';
     }
     return 'white';
 }
