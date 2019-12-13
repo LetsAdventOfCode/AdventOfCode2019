@@ -1,3 +1,7 @@
+fs = require('fs');
+const input = fs.readFileSync('./input.txt', 'UTF-8');
+let parsedInput = input.split('-').map(i => parseInt(i));
+
 function findPasswords(startNumber, endnumber) {
     let validPasswords = 0;
     for (let password = startNumber; password <= endnumber; password++) {
@@ -25,4 +29,4 @@ function findPasswords(startNumber, endnumber) {
 }
 
 
-findPasswords(245182,790572);
+findPasswords(parsedInput[0], parsedInput[1]);
