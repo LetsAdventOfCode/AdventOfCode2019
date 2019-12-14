@@ -1,3 +1,4 @@
+var intCodeComputer = {};
 var gameBoard = [];
 var currentScore = 0;
 var width = 44;
@@ -21,20 +22,20 @@ createMatrix = () => {
 function update() {
     if (useAi) {
         if (ballPos.x < padPos.x) {
-            input = -1;
+            intCodeComputer.input = -1;
         }
         if (ballPos.x > padPos.x) {
-            input = 1;
+            intCodeComputer.input = 1;
         }
         if (ballPos.x === padPos.x) {
-            input = 0;
+            intCodeComputer.input = 0;
         }
     } else {
-        input = (state.pressedKeys['left'] ? -1 : 0) + (state.pressedKeys['right'] ? 1 : 0);
+        intCodeComputer.input = (state.pressedKeys['left'] ? -1 : 0) + (state.pressedKeys['right'] ? 1 : 0);
     }
 
-    while (gameLog.length < 3 && instructionPointer < gameCode.length) {
-        instructionPointer = runCode(gameCode, instructionPointer, gameLog);
+    while (gameLog.length < 3 && intCodeComputer.instructionPointer < gameCode.length) {
+        intCodeComputer.instructionPointer = intCodeComputer.executeInstruction(gameLog);
     }
 
     while (gameLog.length >= 3) {
@@ -174,15 +175,15 @@ function keyup(event) {
 
 function startGame() {
     useAi = document.getElementById("useAi").checked;
-    instructionPointer = 69;
+    intCodeComputer.instructionPointer = 69;
     window.requestAnimationFrame(loop);
     window.addEventListener("keydown", keydown, false);
     window.addEventListener("keyup", keyup, false);
 }
 
 function drawInitialBoard() {
-    while (instructionPointer !== 65) {
-        instructionPointer = runCode(gameCode, instructionPointer, gameLog);
+    while (intCodeComputer.instructionPointer !== 65) {
+        intCodeComputer.instructionPointer = intCodeComputer.executeInstruction(gameLog);
     }
     while (gameLog.length > 0) {
         if (gameLog[0] === -1 && gameLog[1] === 0) {
@@ -206,5 +207,6 @@ function drawInitialBoard() {
 
 gameBoard = createMatrix();
 gameCode = document.getElementById("gameCode").value.split(",").map(num => parseInt(num));
+intCodeComputer = new IntCodeComputer(gameCode);
 drawInitialBoard();
 document.getElementById("gameObjects").innerHTML = blocks;

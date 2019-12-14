@@ -47,9 +47,9 @@ function runWires(instructions, matrix, result) {
     };
 
     matrix[startPos][startPos] = 0;
-    var usedSteps = { firstSteps: 0, secondSteps: 0 }
+    var usedSteps = { firstSteps: 0, secondSteps: 0 };
     for (var i = 0; i < instructions[0].length; i++) {
-        performInstructions(currentState, instructions[0][i], instructions[1][i], matrix, result, usedSteps)
+        performInstructions(currentState, instructions[0][i], instructions[1][i], matrix, result, usedSteps);
     }
 }
 
