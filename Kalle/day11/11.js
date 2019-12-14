@@ -4,9 +4,6 @@ function solve() {
     runCode(code.slice(), log);
 }
 
-var relativeBase = 0;
-var input = 0;
-
 function runCode(code, log) {   
     let robot = { x: 0, y: 0, direction: 0 };
     let matrix = createMatrix();
@@ -41,7 +38,6 @@ function runCode(code, log) {
     }
 
     document.getElementById("solution").innerHTML = atleastOnce;
-    return rows;
 }
 
 function paint(matrix, robot, color) {
@@ -49,8 +45,8 @@ function paint(matrix, robot, color) {
 }
 
 function paintTheHull(matrix, context) {
-    var cellWidth = canvas.width / matrix[0].length;
-    var cellHeight = canvas.height / matrix.length;
+    let cellWidth = canvas.width / matrix[0].length;
+    let cellHeight = canvas.height / matrix.length;
 
     matrix.forEach((row, y) => {
         row.forEach((value, x) => {
@@ -79,8 +75,8 @@ function turnAndMove(matrix, robot, direction) {
 }
 createMatrix = (matrixSize) => {
     let matrix = [];
-    for (let i = 0; i < 50; i++) {
-        matrix[i] = new Array(25).fill(0);
+    for (let i = 0; i < 6; i++) {
+        matrix[i] = new Array(41).fill(0);
     }
     return matrix;
 };
