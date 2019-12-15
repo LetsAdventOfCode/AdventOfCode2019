@@ -8,6 +8,10 @@ var gameCode = [];
 var gameLog = [];
 var droid = { x: width / 2, y: height / 2, direction: 'north', states: [] };
 var closedNodes = [];
+var oxygenSystem = {};
+var minutesSinceRepaired = 0;
+var oxygenSpread = [];
+var fullyOxinated = false;
 
 var directionMap = {
     'north': 1,
@@ -25,22 +29,29 @@ createMatrix = () => {
 
 function update() {
     getOpen();
-    let open = getOpen();    
+    let open = getOpen();
     if (open[0]) {
         droid.direction = open[0].direction;
     }
     else {
         let previousState = droid.states.pop();
-        if (!previousState) return;
+        if (!previousState) {
+            if (!fullyOxinated) {
+                oxinate();
+                minutesSinceRepaired++;
+                document.getElementById("time").innerHTML = minutesSinceRepaired;
+            }
+            return;
+        }
         droid.direction = getPreviousStateDirection(previousState);
     }
     intCodeComputer.input = directionMap[droid.direction];
-    
+
     if (open[0]) {
         droid.states.push({ x: droid.x, y: droid.y });
     }
-    closedNodes[droid.x + ',' + droid.y] = true;    
-    
+    closedNodes[droid.x + ',' + droid.y] = true;
+
     while (gameLog.length < 1 && intCodeComputer.instructionPointer < gameCode.length) {
         intCodeComputer.instructionPointer = intCodeComputer.executeInstruction(gameLog);
     }
@@ -48,8 +59,8 @@ function update() {
     while (gameLog.length >= 1) {
         let location = { y: droid.y + getDirection('y', intCodeComputer.input), x: droid.x + getDirection('x', intCodeComputer.input) };
         gameBoard[location.y][location.x] = gameLog[0];
-        
-        if (gameLog[0] !== 0) {            
+
+        if (gameLog[0] !== 0) {
             droid.y = location.y;
             droid.x = location.x;
         } else {
@@ -57,11 +68,57 @@ function update() {
             closedNodes[location.x + ',' + location.y] = true;
         }
         if (gameLog[0] === 2) {
+            oxygenSystem = { x: droid.x, y: droid.y };
+            oxygenSpread[droid.x + ',' + droid.y] = { x: droid.x, y: droid.y };
             document.getElementById("shortestPath").innerHTML = droid.states.length;
         }
 
         gameLog.shift();
     }
+}
+
+function oxinate() {
+    let newOxinationDict = [];
+    for (let i in oxygenSpread) {
+        let spread = oxygenSpread[i];
+        let successor = { x: spread.x, y: spread.y - 1 };
+        if (tryOxinateSuccessors(successor)) {
+            newOxinationDict[successor.x + ',' + successor.y] = successor;
+        }
+        successor = { x: spread.x + 1, y: spread.y };
+        if (tryOxinateSuccessors(successor)) {
+            newOxinationDict[successor.x + ',' + successor.y] = successor;
+        }
+        successor = { x: spread.x, y: spread.y + 1 };
+        if (tryOxinateSuccessors(successor)) {
+            newOxinationDict[successor.x + ',' + successor.y] = successor;
+        }
+        successor = { x: spread.x - 1, y: spread.y };
+        if (tryOxinateSuccessors(successor)) {
+            newOxinationDict[successor.x + ',' + successor.y] = successor;
+        }
+    }
+    checkOxinationStatus();
+    oxygenSpread = newOxinationDict;
+}
+
+function checkOxinationStatus() {
+    for (var i = 0; i < gameBoard.length; i++) {
+        for (var j = 0; j < gameBoard[i].length; j++) {
+            if (gameBoard[i][j] === 1) {
+                return;
+            }
+        }
+    }
+    fullyOxinated = true;
+}
+
+function tryOxinateSuccessors(successor) {
+    if (gameBoard[successor.y][successor.x] === 1) {
+        gameBoard[successor.y][successor.x] = 5;
+        return true;
+    }
+    return false;
 }
 
 function getPreviousStateDirection(previousState) {
@@ -172,6 +229,9 @@ function getSymbol(val) {
     }
     if (val === 4) {
         return square('red');
+    }
+    if (val === 5) {
+        return square('#a5f291');
     }
     return 'black';
 }
