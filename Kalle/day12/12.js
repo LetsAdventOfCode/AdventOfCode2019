@@ -45,7 +45,7 @@ function gcd(a, b) {
         return a;
     }
     return gcd(b, a % b);
-};
+}
 
 function isCyclic(initialState, currentState, coord) {
     let isRepeated = true;

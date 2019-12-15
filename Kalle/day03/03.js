@@ -86,7 +86,7 @@ function step(state, matrix, result, usedSteps) {
             shortCircuit.manhattanDistance = manhattanDistance(startPos, startPos, state.x, state.y);
             result.shortCircuits.push(shortCircuit);
             result.shortest = Math.min(shortCircuit.manhattanDistance, result.shortest);
-            result.shortestWireShortCircuit = Math.min((shortCircuit.usedSteps.firstSteps + shortCircuit.usedSteps.secondSteps), result.shortestWireShortCircuit);
+            result.shortestWireShortCircuit = Math.min(shortCircuit.usedSteps.firstSteps + shortCircuit.usedSteps.secondSteps, result.shortestWireShortCircuit);
         }
         state.steps--;
     }
@@ -120,7 +120,7 @@ function resetInstruction(state) {
 }
 
 manhattanDistance = (a, b, x, y) => {
-    return (Math.abs(a - x) + Math.abs(b - y));
+    return Math.abs(a - x) + Math.abs(b - y);
 };
 
 createMatrix = () => {

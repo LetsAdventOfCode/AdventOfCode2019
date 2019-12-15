@@ -31,7 +31,7 @@ function drawLayers(layers, context, width, height) {
 
     for (var i = 0; i < layers[0].length; i++) {
         context.fillStyle = cellColor(layers, 0, i);
-        context.fillRect((i % width) * cellWidth, Math.floor(i / width) * cellHeight, cellWidth, cellHeight);
+        context.fillRect(i % width * cellWidth, Math.floor(i / width) * cellHeight, cellWidth, cellHeight);
     }
 }
 

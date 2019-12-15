@@ -3,15 +3,15 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <canvas id="canvas"><a>Advent of Code 2019</a></canvas>
+    <canvas id="snow" class="snow"></canvas>
     <div style="background-color:#0f0f23;">
         <section class='grid-1'>
             <div class='title'>
                 <label>
                     <input type='checkbox' id="check25" />
                     <div class='door'>
-                        <div class='front'>25</div>
-                        <div class='back'><a href="day25\25.html">Day 25: N/A</a></div>
+                        <div class='front'>25<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day25\25.html">Day 25: N/A</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -19,8 +19,8 @@
                 <label>
                     <input type='checkbox' id="check1" />
                     <div class='door'>
-                        <div class='front'>1</div>
-                        <div class='back'><a href="day01\01.html">Day 1: The Tyranny of the Rocket Equation</a></div>
+                        <div class='front'>1<span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
+                        <div class='back'><a href="day01\01.html">Day 1: The Tyranny of the Rocket Equation</a><span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -28,8 +28,8 @@
                 <label>
                     <input type='checkbox' id="check2" />
                     <div class='door'>
-                        <div class='front'>2</div>
-                        <div class='back'><a href="day02\02.html">Day 2: 1202 Program Alarm</a></div>
+                        <div class='front'>2<span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
+                        <div class='back'><a href="day02\02.html">Day 2: 1202 Program Alarm</a><span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -37,8 +37,8 @@
                 <label>
                     <input type='checkbox' id="check3" />
                     <div class='door'>
-                        <div class='front'>3</div>
-                        <div class='back'><a href="day03\03.html">Day 3: Crossed Wires</a></div>
+                        <div class='front'>3<span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
+                        <div class='back'><a href="day03\03.html">Day 3: Crossed Wires</a><span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -46,8 +46,8 @@
                 <label>
                     <input type='checkbox' id="check4" />
                     <div class='door'>
-                        <div class='front'>4</div>
-                        <div class='back'><a href="day04\04.html">Day 4: Secure Container</a></div>
+                        <div class='front'>4<span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
+                        <div class='back'><a href="day04\04.html">Day 4: Secure Container</a><span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -55,8 +55,8 @@
                 <label>
                     <input type='checkbox' id="check5" />
                     <div class='door'>
-                        <div class='front'>5</div>
-                        <div class='back'><a href="day05\05.html">Day 5: Sunny with a Chance of Asteroids</a></div>
+                        <div class='front'>5<span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
+                        <div class='back'><a href="day05\05.html">Day 5: Sunny with a Chance of Asteroids</a><span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -64,8 +64,8 @@
                 <label>
                     <input type='checkbox' id="check6" />
                     <div class='door'>
-                        <div class='front'>6</div>
-                        <div class='back'><a href="day06\06.html">Day 6: Universal Orbit Map</a></div>
+                        <div class='front'>6<span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
+                        <div class='back'><a href="day06\06.html">Day 6: Universal Orbit Map</a><span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -73,8 +73,8 @@
                 <label>
                     <input type='checkbox' id="check7" />
                     <div class='door'>
-                        <div class='front'>7</div>
-                        <div class='back'><a href="day07\07.html">Day 7: Amplification Circuit</a></div>
+                        <div class='front'>7<span class="stars"><span class="complete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day07\07.html">Day 7: Amplification Circuit</a><span class="stars"><span class="complete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -82,8 +82,8 @@
                 <label>
                     <input type='checkbox' id="check8" />
                     <div class='door'>
-                        <div class='front'>8</div>
-                        <div class='back'><a href="day08\08.html">Day 8: Space Image Format</a></div>
+                        <div class='front'>8<span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
+                        <div class='back'><a href="day08\08.html">Day 8: Space Image Format</a><span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -91,8 +91,8 @@
                 <label>
                     <input type='checkbox' id="check9" />
                     <div class='door'>
-                        <div class='front'>9</div>
-                        <div class='back'><a href="day09\09.html">Day 9: Sensor Boost</a></div>
+                        <div class='front'>9<span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
+                        <div class='back'><a href="day09\09.html">Day 9: Sensor Boost</a><span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -100,8 +100,8 @@
                 <label>
                     <input type='checkbox' id="check10" />
                     <div class='door'>
-                        <div class='front'>10</div>
-                        <div class='back'><a href="day10\10.html">Day 10: Monitoring Station</a></div>
+                        <div class='front'>10<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day10\10.html">Day 10: Monitoring Station</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -109,8 +109,8 @@
                 <label>
                     <input type='checkbox' id="check11" />
                     <div class='door'>
-                        <div class='front'>11</div>
-                        <div class='back'><a href="day11\11.html">Day 11: Space Police</a></div>
+                        <div class='front'>11<span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
+                        <div class='back'><a href="day11\11.html">Day 11: Space Police</a><span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -118,8 +118,8 @@
                 <label>
                     <input type='checkbox' id="check12" />
                     <div class='door'>
-                        <div class='front'>12</div>
-                        <div class='back'><a href="day12\12.html">Day 12: The N-Body Problem</a></div>
+                        <div class='front'>12<span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
+                        <div class='back'><a href="day12\12.html">Day 12: The N-Body Problem</a><span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -127,8 +127,8 @@
                 <label>
                     <input type='checkbox' id="check13" />
                     <div class='door'>
-                        <div class='front'>13</div>
-                        <div class='back'><a href="day13\13.html">Day 13: Care Package</a></div>
+                        <div class='front'>13<span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
+                        <div class='back'><a href="day13\13.html">Day 13: Care Package</a><span class="stars"><span class="complete">*</span><span class="complete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -136,8 +136,8 @@
                 <label>
                     <input type='checkbox' id="check14" />
                     <div class='door'>
-                        <div class='front'>14</div>
-                        <div class='back'><a href="day14\14.html">Day 14: N/A</a></div>
+                        <div class='front'>14<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day14\14.html">Day 14: Space Stoichiometry</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -145,8 +145,8 @@
                 <label>
                     <input type='checkbox' id="check15" />
                     <div class='door'>
-                        <div class='front'>15</div>
-                        <div class='back'><a href="day15\15.html">Day 15: N/A</a></div>
+                        <div class='front'>15<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day15\15.html">Day 15: N/A</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -154,8 +154,8 @@
                 <label>
                     <input type='checkbox' id="check16" />
                     <div class='door'>
-                        <div class='front'>16</div>
-                        <div class='back'><a href="day16\16.html">Day 16: N/A</a></div>
+                        <div class='front'>16<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day16\16.html">Day 16: N/A</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -163,8 +163,8 @@
                 <label>
                     <input type='checkbox' id="check17" />
                     <div class='door'>
-                        <div class='front'>17</div>
-                        <div class='back'><a href="day17\17.html">Day 17: N/A</a></div>
+                        <div class='front'>17<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day17\17.html">Day 17: N/A</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -172,8 +172,8 @@
                 <label>
                     <input type='checkbox' id="check18" />
                     <div class='door'>
-                        <div class='front'>18</div>
-                        <div class='back'><a href="day18\18.html">Day 18: N/A</a></div>
+                        <div class='front'>18<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day18\18.html">Day 18: N/A</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -181,8 +181,8 @@
                 <label>
                     <input type='checkbox' id="check19" />
                     <div class='door'>
-                        <div class='front'>19</div>
-                        <div class='back'><a href="day19\19.html">Day 19: N/A</a></div>
+                        <div class='front'>19<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day19\19.html">Day 19: N/A</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -190,8 +190,8 @@
                 <label>
                     <input type='checkbox' id="check20" />
                     <div class='door'>
-                        <div class='front'>20</div>
-                        <div class='back'><a href="day20\20.html">Day 20: N/A</a></div>
+                        <div class='front'>20<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day20\20.html">Day 20: N/A</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -199,8 +199,8 @@
                 <label>
                     <input type='checkbox' id="check21" />
                     <div class='door'>
-                        <div class='front'>21</div>
-                        <div class='back'><a href="day21\21.html">Day 21: N/A</a></div>
+                        <div class='front'>21<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day21\21.html">Day 21: N/A</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -208,8 +208,8 @@
                 <label>
                     <input type='checkbox' id="check22" />
                     <div class='door'>
-                        <div class='front'>22</div>
-                        <div class='back'><a href="day22\22.html">Day 22: N/A</a></div>
+                        <div class='front'>22<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day22\22.html">Day 22: N/A</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -217,8 +217,8 @@
                 <label>
                     <input type='checkbox' id="check23" />
                     <div class='door'>
-                        <div class='front'>23</div>
-                        <div class='back'><a href="day23\23.html">Day 23: N/A</a></div>
+                        <div class='front'>23<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day23\23.html">Day 23: N/A</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
@@ -226,133 +226,13 @@
                 <label>
                     <input type='checkbox' id="check24" />
                     <div class='door'>
-                        <div class='front'>24</div>
-                        <div class='back'><a href="day24\24.html">Day 24: N/A</a></div>
+                        <div class='front'>24<span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
+                        <div class='back'><a href="day24\24.html">Day 24: N/A</a><span class="stars"><span class="notComplete">*</span><span class="notComplete">*</span></span></div>
                     </div>
                 </label>
             </div>
         </section>
     </div>
-    <script>
-        (function () {
-            var daysToOpen = Math.ceil(((new Date() - new Date("2019-12-01")) - 18000000) / 86400000);
-            for (var i = 1; i <= daysToOpen; i++) {
-                document.getElementById("check" + i).checked = true;
-            }
-            var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame ||
-                function (callback) {
-                    window.setTimeout(callback, 1000 / 60);
-                };
-            window.requestAnimationFrame = requestAnimationFrame;
-        })();
-
-        var flakes = [],
-            canvas = document.getElementById("canvas"),
-            ctx = canvas.getContext("2d"),
-            flakeCount = 400,
-            mX = -100,
-            mY = -100
-
-        canvas.width = window.innerWidth - 50;
-        canvas.height = window.innerHeight;
-
-        function snow() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            for (var i = 0; i < flakeCount; i++) {
-                var flake = flakes[i],
-                    x = mX,
-                    y = mY,
-                    minDist = 150,
-                    x2 = flake.x,
-                    y2 = flake.y;
-
-                var dist = Math.sqrt((x2 - x) * (x2 - x) + (y2 - y) * (y2 - y)),
-                    dx = x2 - x,
-                    dy = y2 - y;
-
-                if (dist < minDist) {
-                    var force = minDist / (dist * dist),
-                        xcomp = (x - x2) / dist,
-                        ycomp = (y - y2) / dist,
-                        deltaV = force / 2;
-
-                    flake.velX -= deltaV * xcomp;
-                    flake.velY -= deltaV * ycomp;
-
-                } else {
-                    flake.velX *= .98;
-                    if (flake.velY <= flake.speed) {
-                        flake.velY = flake.speed
-                    }
-                    flake.velX += Math.cos(flake.step += .05) * flake.stepSize;
-                }
-
-                ctx.fillStyle = "rgba(255,255,255," + flake.opacity + ")";
-                flake.y += flake.velY;
-                flake.x += flake.velX;
-
-                if (flake.y >= canvas.height || flake.y <= 0) {
-                    reset(flake);
-                }
-
-
-                if (flake.x >= canvas.width || flake.x <= 0) {
-                    reset(flake);
-                }
-
-                ctx.beginPath();
-                ctx.arc(flake.x, flake.y, flake.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            requestAnimationFrame(snow);
-        };
-
-        function reset(flake) {
-            flake.x = Math.floor(Math.random() * canvas.width);
-            flake.y = 0;
-            flake.size = (Math.random() * 3) + 2;
-            flake.speed = (Math.random() * 1) + 0.5;
-            flake.velY = flake.speed;
-            flake.velX = 0;
-            flake.opacity = (Math.random() * 0.5) + 0.3;
-        }
-
-        function init() {
-            for (var i = 0; i < flakeCount; i++) {
-                var x = Math.floor(Math.random() * canvas.width),
-                    y = Math.floor(Math.random() * canvas.height),
-                    size = (Math.random() * 3) + 2,
-                    speed = (Math.random() * 1) + 0.5,
-                    opacity = (Math.random() * 0.5) + 0.3;
-
-                flakes.push({
-                    speed: speed,
-                    velY: speed,
-                    velX: 0,
-                    x: x,
-                    y: y,
-                    size: size,
-                    stepSize: (Math.random()) / 30,
-                    step: 0,
-                    opacity: opacity
-                });
-            }
-
-            snow();
-        };
-
-        canvas.addEventListener("mousemove", function (e) {
-            mX = e.clientX,
-            mY = e.clientY
-        });
-
-        window.addEventListener("resize", function () {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight - 100;
-        })
-
-        init();
-    </script>
+    <script src="snow.js"></script>
 </body>
 </html>

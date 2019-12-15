@@ -146,8 +146,8 @@ function loop(timestamp) {
 }
 
 var state = {
-    x: (width / 2),
-    y: (height / 2),
+    x: width / 2,
+    y: height / 2,
     pressedKeys: {
         left: false,
         right: false,
