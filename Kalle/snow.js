@@ -1,5 +1,5 @@
 (function () {
-    var daysToOpen = Math.ceil(new Date() - new Date("2019-12-01") - 18000000) / 86400000;
+    var daysToOpen = Math.ceil((new Date() - new Date("2019-12-01") - 18000000) / 86400000);
     for (var i = 1; i <= daysToOpen; i++) {
         document.getElementById("check" + i).checked = true;
     }
