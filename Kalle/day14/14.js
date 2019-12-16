@@ -1,83 +1,98 @@
 function solve() {
     let cookBook = document.getElementById("instructions").value.split("\n");
-    recipies = parseCookBook(cookBook);
+    recipes = parseCookBook(cookBook);
     neededOre = 0;
     let waste = {};
-    createRecipe('FUEL', 1, recipies, waste);
-    neededOre -= tryReturnWaste(waste, recipies);
-    document.getElementById("solution").innerHTML = neededOre;
-    //document.getElementById("solution2").innerHTML = waste.join();
+    simplify(recipes['FUEL'], waste);
+    let copyWaste = copyAndMultiplyWaste(waste, 1);
+    let returnedWasteOre = 0;
+    for (let i in waste) {
+        returnedWasteOre += tryReturnWaste(copyWaste, i);
+    }
+
+    let availableOre = parseInt(document.getElementById("availableOre").value);
+
+    //let minimumRepeats = Math.floor(availableOre / (neededOre - returnedWasteOre));
+    let wasteHandling = { previousWaste: waste, waste: waste };
+    let maxFuels = calcMaxFuels(availableOre, neededOre - returnedWasteOre, wasteHandling);
+
+    document.getElementById("solution").innerHTML = neededOre - returnedWasteOre;
+    document.getElementById("solution2").innerHTML = maxFuels;
 }
 var neededOre = 0;
-function createRecipe(component, previousMultiplier, recipies, waste) {
-    let recipe = recipies[component];
-    if (recipe.ingredients) {
-        for (let ingredient of recipe.ingredients) {
-            let amount = previousMultiplier;
-            let toCraft = Math.ceil(amount / recipe.quantity);
-            for (var i = 0; i < toCraft; i++) {
-                let craftedMaterial = recipe.quantity;
-                if (ingredient.name === 'ORE') {
-                    //Craft
-                    console.log("Crafted " + recipe.quantity + ' ' + recipe.name + ' using ' + ingredient.quantity + ' ' + ingredient.name);
-                    neededOre += ingredient.quantity;
-                    if (craftedMaterial - amount > 0) {
-                        if (!waste[recipe.name]) {
-                            waste[recipe.name] = 0;
-                        }
-                        waste[recipe.name] += craftedMaterial - amount;
-                    }
-                    amount -= craftedMaterial;
 
-                }
-                else {
-                    createRecipe(ingredient.name, ingredient.quantity, recipies, waste);
-                    if (craftedMaterial - amount > 0) {
-                        if (!waste[recipe.name]) {
-                            waste[recipe.name] = 0;
-                        }
-                        waste[recipe.name] += craftedMaterial - amount;
-                    }
-                    amount -= craftedMaterial;
-                }
-            }
-        }
+function calcMaxFuels(availableOre, recipeCost, wasteHandling) {
+    let minimumRepeats = Math.floor(availableOre / recipeCost);
+    console.log(minimumRepeats + ' + ');
+    let newWaste = copyAndMultiplyWaste(wasteHandling.waste, minimumRepeats);
+    let moreReturnedOre = 0;
+    for (let i in wasteHandling.waste) {
+        moreReturnedOre += tryReturnWaste(newWaste, i);
     }
-    
+    let leftOvers = availableOre + moreReturnedOre - recipeCost * minimumRepeats;
+    wasteHandling.previousWaste = wasteHandling.waste;
+    wasteHandling.waste = newWaste;
+    return minimumRepeats > 0 ? calcMaxFuels(leftOvers, recipeCost, wasteHandling) + minimumRepeats : minimumRepeats;
 }
 
-function tryReturnWaste(waste, recipies) {
-    let returnedOre = 0;
+function copyAndMultiplyWaste(waste, multiplier) {
+    let newWaste = [];
     for (let i in waste) {
-        let recipe = recipies[i];
-        let returnableMultiplier = Math.floor(waste[i] / recipe.quantity);
-        if (returnableMultiplier > 0) {
-            let newWaste = waste[i] % recipe.quantity;
-            waste[i] = newWaste;
-            if (recipe.ingredients[0].name === 'ORE') {
-                returnedOre += returnableMultiplier * recipe.ingredients[0].quantity;
-            }
-            else {
-                for (let ingredient of recipe.ingredients) {
-                    if (!waste[ingredient.name]) {
-                        waste[ingredient.name] = 0;
-                    }
-                    waste[ingredient.name] += ingredient.quantity * returnableMultiplier;
-                }
-            }
-            returnedOre += tryReturnWaste(waste, recipies);
-        }
+        newWaste[i] = waste[i] * multiplier;
     }
-    return returnedOre;
+    return newWaste;
 }
 
-function tryUseWaste(waste, recipeName, neededAmount) {
-    let existingWaste = waste[recipeName] ? waste[recipeName] : 0;
-    if (existingWaste >= neededAmount) {
-        waste[recipeName] -= neededAmount;
-        return true;
+function simplify(recipe, waste) {
+    for (let ingredient of recipe.ingredients) {
+        if (ingredient.name === 'ORE') {
+            neededOre += ingredient.quantity;
+        }
+        else {
+            let recipeToCraft = recipes[ingredient.name];
+            let neededRecipeRuns = Math.ceil(ingredient.quantity * recipe.quantity / recipeToCraft.quantity);
+            let wasteProduced = recipeToCraft.quantity * neededRecipeRuns - ingredient.quantity;
+            if (wasteProduced > 0) {
+                if (!waste[ingredient.name]) {
+                    waste[ingredient.name] = 0;
+                }
+                waste[ingredient.name] += wasteProduced;
+            }
+            for (var i = 0; i < neededRecipeRuns; i++) {
+                simplify(recipeToCraft, waste);
+            }
+        }
     }
-    return false;
+}
+
+function tryReturnWaste(waste, i) {
+    let returnedOre = 0;
+    let recipe = recipes[i];
+    let returnableMultiplier = Math.floor(waste[i] / recipe.quantity);
+    if (returnableMultiplier > 0) {
+        let newWaste = waste[i] % recipe.quantity;
+        if (newWaste === 0) {
+            delete waste[i];
+        }
+        else {
+            waste[i] = newWaste;
+        }
+
+        if (recipe.ingredients[0].name === 'ORE') {
+            returnedOre += returnableMultiplier * recipe.ingredients[0].quantity;
+        }
+        else {
+            for (let ingredient of recipe.ingredients) {
+                if (!waste[ingredient.name]) {
+                    waste[ingredient.name] = 0;
+                }
+                waste[ingredient.name] += ingredient.quantity * returnableMultiplier;
+                returnedOre += tryReturnWaste(waste, ingredient.name);
+            }
+        }
+    }
+
+    return returnedOre;
 }
 
 function parseCookBook(cookBook) {
