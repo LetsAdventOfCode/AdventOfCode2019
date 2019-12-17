@@ -8,14 +8,14 @@ function solve() {
 }
 
 function calcMaxFuels(availableOre, recipeCost) {
-    let minimumRepeats = Math.floor(availableOre / recipeCost);
+    let minimumRepeats = 0;
     let waste = {};
-    availableOre -= oreToCraftProduct(recipes['FUEL'], minimumRepeats, waste);
     let oreAvailable = true;
     while (oreAvailable) {
-        availableOre -= oreToCraftProduct(recipes['FUEL'], 1, waste);
+        let leapOfFaith = Math.floor(availableOre / recipeCost) || 1;
+        availableOre -= oreToCraftProduct(recipes['FUEL'], leapOfFaith, waste);
         if (availableOre > 0) {
-            minimumRepeats++;
+            minimumRepeats += leapOfFaith;
         } else {
             break;
         }
@@ -45,60 +45,6 @@ function oreToCraftProduct(recipe, quantityNeeded, waste) {
     waste[recipe.name] = (waste[recipe.name] || 0) + recipeMultiplier * recipe.quantity;
 
     return neededOre;
-}
-
-
-function simplify(recipe, requiredOre, waste) {
-    for (let ingredient of recipe.ingredients) {
-        if (ingredient.name === 'ORE') {
-            requiredOre.quantity += ingredient.quantity;
-        }
-        else {
-            let recipeToCraft = recipes[ingredient.name];
-            let neededRecipeRuns = Math.ceil(ingredient.quantity * recipe.quantity / recipeToCraft.quantity);
-            let wasteProduced = recipeToCraft.quantity * neededRecipeRuns - ingredient.quantity;
-            if (wasteProduced > 0) {
-                if (!waste[ingredient.name]) {
-                    waste[ingredient.name] = 0;
-                }
-                waste[ingredient.name] += wasteProduced;
-            }
-            for (var i = 0; i < neededRecipeRuns; i++) {
-                simplify(recipeToCraft, requiredOre, waste);
-            }
-        }
-    }
-}
-
-function tryReturnWaste(component, waste, returnedOre) {
-    if (component === 'ORE')
-        return;
-    let recipe = recipes[component];
-    if (waste[component]) {
-        let canBeSimplifiedTimes = Math.floor(waste[component] / recipe.quantity);
-
-        if (canBeSimplifiedTimes) {
-            let rest = waste[component] % recipe.quantity;
-            
-            if (rest > 0) {
-                waste[component] = rest;
-            } else {
-                delete waste[component];
-            }
-
-            for (let ingredient of recipe.ingredients) {
-                if (ingredient.name === 'ORE') {
-                    returnedOre.quantity += canBeSimplifiedTimes * ingredient.quantity;
-                }
-                else {
-                    if (!waste[ingredient.name]) {
-                        waste[ingredient.name] = 0;
-                    }
-                    waste[ingredient.name] += canBeSimplifiedTimes * ingredient.quantity;
-                }
-            }
-        }
-    }
 }
 
 function parseReactions(cookBook) {
