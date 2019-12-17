@@ -1,38 +1,61 @@
+var longestPath = 0;
+var tierList = [];
 function solve() {
+    tierList = [];
+    longestPath = 0;
     let cookBook = document.getElementById("instructions").value.split("\n");
     recipes = parseCookBook(cookBook);
-    neededOre = 0;
+    countPath(recipes['FUEL']);
     let waste = {};
-    simplify(recipes['FUEL'], waste);
+    let requiredOre = { quantity: 0 };
+    simplify(recipes['FUEL'], requiredOre, waste);
     let copyWaste = copyAndMultiplyWaste(waste, 1);
-    let returnedWasteOre = 0;
-    for (let i in waste) {
-        returnedWasteOre += tryReturnWaste(copyWaste, i);
+    let returnedOre = { quantity: 0 };
+    for (let i = tierList.length - 1; i >= 0; i--) {
+        for (let key in tierList[i]) {
+            tryReturnWaste(key, copyWaste, returnedOre);
+        }
     }
 
     let availableOre = parseInt(document.getElementById("availableOre").value);
+    let maxFuels = calcMaxFuels(availableOre, requiredOre.quantity - returnedOre.quantity, copyWaste);
 
-    //let minimumRepeats = Math.floor(availableOre / (neededOre - returnedWasteOre));
-    let wasteHandling = { previousWaste: waste, waste: waste };
-    let maxFuels = calcMaxFuels(availableOre, neededOre - returnedWasteOre, wasteHandling);
-
-    document.getElementById("solution").innerHTML = neededOre - returnedWasteOre;
+    document.getElementById("solution").innerHTML = requiredOre.quantity - returnedOre.quantity;
     document.getElementById("solution2").innerHTML = maxFuels;
 }
-var neededOre = 0;
 
-function calcMaxFuels(availableOre, recipeCost, wasteHandling) {
+function countPath(recipe) {
+    if (recipe.ingredients[0].name === 'ORE') {
+        recipe.tier = 0;
+        if (!tierList[0]) {
+            tierList[0] = [];
+        }
+        tierList[0][recipe.name] = true;
+        return 0;
+    }
+
+    let a = recipe.ingredients.map(i => 1 + countPath(recipes[i.name]));
+    let longestChild = Math.max(...a);
+    if (!tierList[longestChild]) {
+        tierList[longestChild] = [];
+    }
+    recipe.tier = longestChild;
+    tierList[longestChild][recipe.name] = true;
+    return longestChild;
+}
+
+function calcMaxFuels(availableOre, recipeCost, waste) {
     let minimumRepeats = Math.floor(availableOre / recipeCost);
     console.log(minimumRepeats + ' + ');
-    let newWaste = copyAndMultiplyWaste(wasteHandling.waste, minimumRepeats);
-    let moreReturnedOre = 0;
-    for (let i in wasteHandling.waste) {
-        moreReturnedOre += tryReturnWaste(newWaste, i);
+    let newWaste = copyAndMultiplyWaste(waste, minimumRepeats);
+    let returnedOre = { quantity: 0 };
+    for (var i = tierList.length - 1; i >= 0; i--) {
+        for (let key in tierList[i]) {
+            tryReturnWaste(key, newWaste, returnedOre);
+        }
     }
-    let leftOvers = availableOre + moreReturnedOre - recipeCost * minimumRepeats;
-    wasteHandling.previousWaste = wasteHandling.waste;
-    wasteHandling.waste = newWaste;
-    return minimumRepeats > 0 ? calcMaxFuels(leftOvers, recipeCost, wasteHandling) + minimumRepeats : minimumRepeats;
+    let leftOvers = availableOre + returnedOre.quantity - recipeCost * minimumRepeats;
+    return minimumRepeats > 0 ? calcMaxFuels(leftOvers, recipeCost, waste) + minimumRepeats : minimumRepeats;
 }
 
 function copyAndMultiplyWaste(waste, multiplier) {
@@ -43,10 +66,10 @@ function copyAndMultiplyWaste(waste, multiplier) {
     return newWaste;
 }
 
-function simplify(recipe, waste) {
+function simplify(recipe, requiredOre, waste) {
     for (let ingredient of recipe.ingredients) {
         if (ingredient.name === 'ORE') {
-            neededOre += ingredient.quantity;
+            requiredOre.quantity += ingredient.quantity;
         }
         else {
             let recipeToCraft = recipes[ingredient.name];
@@ -59,48 +82,49 @@ function simplify(recipe, waste) {
                 waste[ingredient.name] += wasteProduced;
             }
             for (var i = 0; i < neededRecipeRuns; i++) {
-                simplify(recipeToCraft, waste);
+                simplify(recipeToCraft, requiredOre, waste);
             }
         }
     }
 }
 
-function tryReturnWaste(waste, i) {
-    let returnedOre = 0;
-    let recipe = recipes[i];
-    let returnableMultiplier = Math.floor(waste[i] / recipe.quantity);
-    if (returnableMultiplier > 0) {
-        let newWaste = waste[i] % recipe.quantity;
-        if (newWaste === 0) {
-            delete waste[i];
-        }
-        else {
-            waste[i] = newWaste;
-        }
-
-        if (recipe.ingredients[0].name === 'ORE') {
-            returnedOre += returnableMultiplier * recipe.ingredients[0].quantity;
-        }
-        else {
+function tryReturnWaste(component, waste, returnedOre) {
+    if (component === 'ORE')
+        return;
+    let recipe = recipes[component];
+    if (waste[component]) {
+        let canBeSimplifiedTimes = Math.floor(waste[component] / recipe.quantity);
+        
+        if (canBeSimplifiedTimes) {
+            let rest = waste[component] % recipe.quantity;
+            console.log('Replacíng ' + canBeSimplifiedTimes * recipe.quantity + ' ' + recipe.name + ' with ' + recipe.ingredients.map(i => (canBeSimplifiedTimes * i.quantity) + ' ' + i.name).join(', ') + ' leaving ' + rest + ' ' + recipe.name);
+            if (rest > 0) {
+                waste[component] = rest;
+            } else {
+                delete waste[component];
+            }
+            
             for (let ingredient of recipe.ingredients) {
-                if (!waste[ingredient.name]) {
-                    waste[ingredient.name] = 0;
+                if (ingredient.name === 'ORE') {
+                    returnedOre.quantity += canBeSimplifiedTimes * ingredient.quantity;
                 }
-                waste[ingredient.name] += ingredient.quantity * returnableMultiplier;
-                returnedOre += tryReturnWaste(waste, ingredient.name);
+                else {
+                    if (!waste[ingredient.name]) {
+                        waste[ingredient.name] = 0;
+                    }
+                    waste[ingredient.name] += canBeSimplifiedTimes * ingredient.quantity;
+                }
             }
         }
     }
-
-    return returnedOre;
 }
 
 function parseCookBook(cookBook) {
     let dict = {};
     for (let recipe of cookBook) {
         let splittedRecipe = recipe.split('=>');
-        let ingredients = splittedRecipe[0].split(',').map(i => i.trim()).map(v => createComponent(v, dict));
-        let chemical = splittedRecipe[1].split(',').map(i => i.trim()).map(v => createComponent(v, dict))[0];
+        let ingredients = splittedRecipe[0].split(',').map(i => i.trim()).map(v => createComponent(v));
+        let chemical = splittedRecipe[1].split(',').map(i => i.trim()).map(v => createComponent(v))[0];
         if (dict[chemical.name]) {
             dict[chemical.name].ingredients = ingredients.map();
         }
@@ -112,10 +136,17 @@ function parseCookBook(cookBook) {
     return dict;
 }
 
-function createComponent(component, dict) {
+function createComponent(component) {
     let splitted = component.split(' ');
-    return {
-        quantity: parseInt(splitted[0]),
-        name: splitted[1]
-    };
+    return new Component(splitted[1], parseInt(splitted[0]));
+}
+
+class Component {
+    constructor(name, quantity) {
+        this.name = name;
+        this.quantity = quantity;
+    }
+
+    name;
+    quantity;
 }
