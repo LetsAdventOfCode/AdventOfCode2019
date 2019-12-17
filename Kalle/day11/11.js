@@ -14,7 +14,7 @@ function runCode(code, log) {
     let intCodeComputer = new IntCodeComputer(code);
     intCodeComputer.input = matrix[robot.y][robot.x];
 
-    while (intCodeComputer.instructionPointer < intCodeComputer.programCode.length) {
+    while (intCodeComputer.instructionPointer < intCodeComputer.intCode.length) {
         intCodeComputer.instructionPointer = intCodeComputer.executeInstruction(log);
         if (log.length === 1) {
             if (timeToMove) {

@@ -206,7 +206,7 @@ function drawInitialBoard() {
 }
 
 gameBoard = createMatrix();
-gameCode = document.getElementById("gameCode").value.split(",").map(num => parseInt(num));
+gameCode = document.getElementById("intCode").value.split(",").map(num => parseInt(num));
 intCodeComputer = new IntCodeComputer(gameCode);
 drawInitialBoard();
 document.getElementById("gameObjects").innerHTML = blocks;

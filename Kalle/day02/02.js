@@ -1,14 +1,14 @@
 function solve() {
-    var programCode = document.getElementById("input").value.split(",").map(num => parseInt(num));
+    var intCode = document.getElementById("input").value.split(",").map(num => parseInt(num));
 	
-    programCode[1] = 12;
-    programCode[2] = 2;
-    let intCodeComputer = new IntCodeComputer(programCode.slice());
+    intCode[1] = 12;
+    intCode[2] = 2;
+    let intCodeComputer = new IntCodeComputer(intCode.slice());
     intCodeComputer.runProgram(0, []);
 	
-    var array = programCode.slice();
+    var array = intCode.slice();
     recursiveIntProgram(array, 0, 0);
-    document.getElementById("solution").innerHTML = intCodeComputer.programCode[0];
+    document.getElementById("solution").innerHTML = intCodeComputer.intCode[0];
 	document.getElementById("solution2").innerHTML = array[1] + " " + array[2];
 }
 

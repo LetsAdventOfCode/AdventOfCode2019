@@ -1,5 +1,5 @@
 function solve() {
-    let programCode = document.getElementById("instructions").value.split(",").map(num => parseInt(num));
+    let intCode = document.getElementById("instructions").value.split(",").map(num => parseInt(num));
     let phaseSettingsVariations = permute([0, 1, 2, 3, 4]);
     let thrust = 0;
 
@@ -7,9 +7,9 @@ function solve() {
         let amplifiers = [];
         let log = [0];
         for (let i in phaseSettings) {
-            amplifiers.push(new IntCodeComputer([...programCode]));
+            amplifiers.push(new IntCodeComputer([...intCode]));
             amplifiers[i].input = phaseSettings[i];
-            while (amplifiers[i].instructionPointer < programCode.length) {
+            while (amplifiers[i].instructionPointer < intCode.length) {
                 amplifiers[i].instructionPointer = amplifiers[i].executeInstruction(log);
                 amplifiers[i].input = log[i];
             }
