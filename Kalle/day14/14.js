@@ -17,9 +17,10 @@ function calcMaxFuels(availableOre, recipeCost) {
         if (availableOre > 0) {
             minimumRepeats++;
         } else {
-            oreDepleted = false;
+            break;
         }
     }
+    return minimumRepeats;
 }
 
 function oreToCraftProduct(recipe, quantityNeeded, waste) {
