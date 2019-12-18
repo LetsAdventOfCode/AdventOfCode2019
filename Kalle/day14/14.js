@@ -2,25 +2,15 @@ function solve() {
     recipes = parseReactions(document.getElementById("instructions").value.split("\n"));
     let requiredOre = oreToCraftProduct(recipes['FUEL'], 1, {});
     let availableOre = parseInt(document.getElementById("availableOre").value);
-    let maxFuels = calcMaxFuels(availableOre, requiredOre);
+    let maxFuels = calcMaxFuels(availableOre, requiredOre, {});
     document.getElementById("solution").innerHTML = requiredOre;
     document.getElementById("solution2").innerHTML = maxFuels;
 }
 
-function calcMaxFuels(availableOre, recipeCost) {
-    let minimumRepeats = 0;
-    let waste = {};
-    let oreAvailable = true;
-    while (oreAvailable) {
-        let leapOfFaith = Math.floor(availableOre / recipeCost) || 1;
-        availableOre -= oreToCraftProduct(recipes['FUEL'], leapOfFaith, waste);
-        if (availableOre >= 0) {
-            minimumRepeats += leapOfFaith;
-        } else {
-            break;
-        }
-    }
-    return minimumRepeats;
+function calcMaxFuels(availableOre, recipeCost, waste) {
+    let leapOfFaith = Math.floor(availableOre / recipeCost) || 1;
+    availableOre -= oreToCraftProduct(recipes['FUEL'], leapOfFaith, waste);
+    return availableOre >= 0 ? leapOfFaith + calcMaxFuels(availableOre, recipeCost, waste) : 0;
 }
 
 function oreToCraftProduct(recipe, quantityNeeded, waste) {
@@ -55,9 +45,7 @@ function parseReactions(cookBook) {
         let chemical = splittedRecipe[1].split(',').map(i => i.trim()).map(v => createComponent(v))[0];
         if (dict[chemical.name]) {
             chemical.ingredients = {};
-            for (let ingredient of ingredients) {
-                chemical.ingredients = ingredients;
-            }
+            chemical.ingredients = ingredients;
         }
         else {
             chemical.ingredients = ingredients;
