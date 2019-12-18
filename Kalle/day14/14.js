@@ -14,7 +14,7 @@ function calcMaxFuels(availableOre, recipeCost) {
     while (oreAvailable) {
         let leapOfFaith = Math.floor(availableOre / recipeCost) || 1;
         availableOre -= oreToCraftProduct(recipes['FUEL'], leapOfFaith, waste);
-        if (availableOre > 0) {
+        if (availableOre >= 0) {
             minimumRepeats += leapOfFaith;
         } else {
             break;
