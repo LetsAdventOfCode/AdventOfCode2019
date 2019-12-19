@@ -1,12 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Local settings (.vs)",
+    "\\IntCodeComputer",
     "\\Local settings (.vs)\\Kalle",
-    "\\Local settings (.vs)\\Kalle\\v16",
     "\\Local settings (.vs)\\Kalle\\v16\\TestStore",
     "\\Local settings (.vs)\\Kalle\\v16\\TestStore\\0"
   ],
-  "SelectedNode": "\\Local settings (.vs)\\Kalle\\v16\\TestStore\\0\\testlog.manifest",
+  "SelectedNode": "\\Local settings (.vs)",
   "PreviewInSolutionExplorer": false
 }
