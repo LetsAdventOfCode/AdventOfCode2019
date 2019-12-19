@@ -6,6 +6,7 @@ class IntCodeComputer {
     input = 0;
     relativeBase = 0;
     instructionPointer = 0;
+    intCode;
 
     runProgram(input, log) {
         this.input = input;

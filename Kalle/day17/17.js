@@ -2,58 +2,75 @@ var intCodeComputer = {};
 var gameBoard = [];
 var width = 44;
 var height = 20;
-var gameCode = [];
 var gameLog = [];
+var points = [];
 
 function startGame() {
+    gameBoard[0] = [];
     window.requestAnimationFrame(loop);
     window.addEventListener("keydown", keydown, false);
     window.addEventListener("keyup", keyup, false);
 }
 
-createMatrix = () => {
-    let matrix = [];
-    for (let i = 0; i < height; i++) {
-        matrix[i] = new Array(width).fill(0);
-    }
-    return matrix;
+let successors = (root, m) => {
+    let connectedCells = [
+        [root[0] - 1, root[1]],
+        [root[0], root[1] - 1],
+        [root[0] + 1, root[1]],
+        [root[0], root[1] + 1]
+    ];
+
+    const validCells = connectedCells.filter(
+        (cell) =>
+            cell[0] >= 0 && cell[0] < m.length
+            && cell[1] >= 0 && cell[1] < m[0].length
+    );
+
+    const successors = validCells.filter(
+        (cell) => m[cell[0]][cell[1]] === 35
+    );
+
+    return successors;
 };
 
 function update() {
-    let matrix = [];
-    matrix[0] = [];
     let j = 0;
+    let sum = 0;
     for (let i = 0; i < 3000; i++) {
-
-
-        while (gameLog.length < 1 && intCodeComputer.instructionPointer < gameCode.length) {
+        while (gameLog.length < 1 && intCodeComputer.instructionPointer < intCodeComputer.intCode.length) {
             intCodeComputer.instructionPointer = intCodeComputer.executeInstruction(gameLog);
-
         }
 
         while (gameLog.length >= 1) {
             if (String.fromCharCode(gameLog[0]) === '\n') {
                 j++;
-                matrix[j] = [];
+                gameBoard[j] = [];
                 gameLog.shift();
                 break;
             }
 
-            matrix[j].push(gameLog[0]);
+            gameBoard[j].push(gameLog[0]);
+            if (gameLog[0] === 35) {
+                points.push([j, gameBoard[j].length - 1]);
+            }
             gameLog.shift();
-            //gameBoard[gameLog[1]][gameLog[0]] = gameLog[0];
         }
     }
+    for (let point of points) {
+        if (successors(point, gameBoard).length === 4) {
+            gameBoard[point[0]][point[1]] = 4;
+            sum += point[0] * point[1];
+        }        
+    }
+    document.getElementById("sum").innerHTML = sum;
 }
-
-
 
 function draw() {
     let context = document.getElementById('canvas').getContext('2d');
     context.beginPath();
     var cellWidth = canvas.width / gameBoard[0].length;
     var cellHeight = canvas.height / gameBoard.length;
-    document.getElementById("currentScore").innerHTML = currentScore;
+
     gameBoard.forEach((row, y) => {
         row.forEach((value, x) => {
             gameObject = getSymbol(value, x, y);
@@ -92,10 +109,10 @@ pad = function (color) {
 };
 
 function getSymbol(val, x, y) {
-    if (val === 0) {
+    if (val === 46) {
         return square('black');
     }
-    if (val === 1) {
+    if (val === 35) {
         return square('white');
     }
     if (val === 2) {
@@ -105,14 +122,14 @@ function getSymbol(val, x, y) {
         return pad('#7FB3D5');
     }
     if (val === 4) {
-        return circle('#922B21');
+        return square('yellow');
     }
-    return 'black';
+    return square('red');
 }
 
 function loop(timestamp) {
 
-    if (intCodeComputer.instructionPointer >= gameCode.length)
+    if (intCodeComputer.instructionPointer >= intCodeComputer.intCode.length)
         return;
     update();
     draw();
@@ -146,8 +163,5 @@ function keyup(event) {
     state.pressedKeys[key] = false;
 }
 
-
-gameBoard = createMatrix();
-gameCode = document.getElementById("intCode").value.split(",").map(num => parseInt(num));
-intCodeComputer = new IntCodeComputer(gameCode);
+intCodeComputer = new IntCodeComputer(document.getElementById("intCode").value.split(",").map(num => parseInt(num)));
 //document.getElementById("gameObjects").innerHTML = blocks;
