@@ -5,6 +5,10 @@ body {
     font-size: 14pt;
 }
 
+.menu {
+    margin-left: 5%;
+}
+
 .snow {
     position: absolute;
     top: 0;
