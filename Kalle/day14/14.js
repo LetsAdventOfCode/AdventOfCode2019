@@ -1,10 +1,12 @@
 function solve() {
+    var now = new Date();
     recipes = parseReactions(document.getElementById("instructions").value.split("\n"));
     let requiredOre = oreToCraftProduct(recipes['FUEL'], 1, {});
     let availableOre = parseInt(document.getElementById("availableOre").value);
     let maxFuels = calcMaxFuels(availableOre, requiredOre, {});
     document.getElementById("solution").innerHTML = requiredOre;
     document.getElementById("solution2").innerHTML = maxFuels;
+    document.getElementById('time').innerHTML = (new Date() - now) + ' ms';
 }
 
 function calcMaxFuels(availableOre, recipeCost, waste) {

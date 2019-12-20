@@ -56,16 +56,17 @@
 #........................#.##..........#....##..
 .#.........#.#.#...#...#....#........#..#.......
 ...#..#.#......................#...............#</textarea>
-        <button onclick="solve()">Solve</button><br />
+        <button onclick="scanAsteroidBelt()">Scan</button><br />
     </div>
     <div style="float:left; border: 1px dashed; margin: 10px; padding: 10px;">
         <div>
-            Total Energy of the universe
-            <h3 id="solution"></h3>
+            Asteroid's detected
+            <h3 id="detected"></h3>
         </div>
         <div>
-            Time til the universe starts over
-            <h3 id="solution2"></h3>
+            200's destroyed asteroid coordinate strange math
+            <h3 id="destroyed"></h3>
+            <canvas id="canvas" width="800" height="600" style="position: relative;"></canvas>
         </div>
     </div>
     <script src="10.js"></script>
