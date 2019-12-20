@@ -1,27 +1,54 @@
 function solve() {
-    let intCode = document.getElementById("instructions").value.split(",").map(num => parseInt(num));
+    let intCode = document.getElementById("intCode").value.split(",").map(num => parseInt(num));
     let phaseSettingsVariations = permute([0, 1, 2, 3, 4]);
-    let thrust = 0;
+    let maxThrust = findMaxThrust(intCode, phaseSettingsVariations);
 
+    let phaseSettingsFeedback = permute([5, 6, 7, 8, 9]);
+    let maxThrustFeedback = findMaxThrust(intCode, phaseSettingsFeedback);
+
+    document.getElementById("maxThrust").innerHTML = maxThrust.thrust;
+    document.getElementById("phaseSettings").innerHTML = maxThrust.phaseSettings.join(', ');
+    document.getElementById("maxThrustFeedback").innerHTML = maxThrustFeedback.thrust;
+    document.getElementById("phaseSettingsFeedback").innerHTML = maxThrustFeedback.phaseSettings.join(', ');
+}
+
+function findMaxThrust(intCode, phaseSettingsVariations) {
+    let maxThrust = { thrust: 0, phaseSettings: [] };
     for (let phaseSettings of phaseSettingsVariations) {
-        let amplifiers = [];
-        let log = [0];
-        for (let i in phaseSettings) {
-            amplifiers.push(new IntCodeComputer([...intCode]));
-            amplifiers[i].input = phaseSettings[i];
-            while (amplifiers[i].instructionPointer < intCode.length) {
-                amplifiers[i].instructionPointer = amplifiers[i].executeInstruction(log);
-                amplifiers[i].input = log[i];
+        let amplifiers = setupAmplifiers(intCode, phaseSettings);
+        
+        let thrust = 0;
+        while (amplifiers.every(amp => !amp.hasTerminated)) {
+            for (let amplifier of amplifiers) {
+                amplifier.inputHandler.input = thrust;
+                thrust = amplifyThrust(amplifier);
+            }
+
+            if (maxThrust.thrust < thrust) {
+                maxThrust.phaseSettings = phaseSettings;
+                maxThrust.thrust = thrust;
             }
         }
-        if (thrust < log[log.length - 1]) {
-            powerSetting = phaseSettings;
-            thrust = log[log.length - 1];
-        }
     }
+    return maxThrust;
+}
 
-    document.getElementById("solution").innerHTML = thrust;
-    //document.getElementById("solution2").innerHTML = powerSetting;
+function amplifyThrust(amplifier) {
+    let log = [];
+    while (log.length < 1 && !amplifier.hasTerminated) {
+        amplifier.instructionPointer = amplifier.executeInstruction(log);
+    }
+    return log[0];
+}
+
+function setupAmplifiers(intCode, phaseSettings) {
+    let amplifiers = [];
+    for (let i = 0; i < 5; i++) {
+        let amplifier = new IntCodeComputer([...intCode]);
+        amplifier.inputHandler = new InputHandler(phaseSettings[i]);
+        amplifiers.push(amplifier);
+    }
+    return amplifiers;
 }
 
 function permute(phaseSettings) {
@@ -42,4 +69,19 @@ function permute(phaseSettings) {
 
     }
     return permutations;
+}
+
+class InputHandler {
+    constructor(phaseSetting) {
+        this.phaseSetting = phaseSetting;
+        this.phaseSettingUsed = false;
+    }
+
+    input;
+
+    getInput() {
+        let input = this.phaseSettingUsed ? this.input : this.phaseSetting;
+        this.phaseSettingUsed = true;
+        return input;
+    }
 }

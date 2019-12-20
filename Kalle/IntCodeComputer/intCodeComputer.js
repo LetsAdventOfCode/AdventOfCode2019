@@ -7,6 +7,11 @@ class IntCodeComputer {
     relativeBase = 0;
     instructionPointer = 0;
     intCode;
+    inputHandler;
+
+    get hasTerminated() {
+        return this.instructionPointer >= this.intCode.length;
+    } 
 
     runProgram(input, log) {
         this.input = input;
@@ -33,7 +38,7 @@ class IntCodeComputer {
                 this.intCode[param3] = param1 * param2;
                 return this.instructionPointer + 4;
             case 3:
-                this.intCode[this.getResultIndex(mode[2], 1)] = this.input;
+                this.intCode[this.getResultIndex(mode[2], 1)] = this.getInput();
                 return this.instructionPointer + 2;
             case 4:
                 log.push(param1);
@@ -55,6 +60,13 @@ class IntCodeComputer {
             default:
                 return this.intCode.length;
         }
+    }
+
+    getInput() {
+        if (typeof this.inputHandler !== 'undefined') {
+            this.input = this.inputHandler.getInput();
+        }
+        return this.input;
     }
 
     getResultIndex(mode, x) {
