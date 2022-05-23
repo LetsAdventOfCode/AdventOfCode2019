@@ -1,0 +1,40 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../styles.css">
+</head>
+<body>
+    <div class="title-global">
+        <a href="../index.html">Advent of Code 2019</a>
+    </div>
+    <nav class="menu">
+        <a href="https://adventofcode.com/2019/day/16">[Read problem]</a>
+    </nav>
+    <div style="margin: auto;  width: 50%;;">
+        <h1>Day 16: Flawed Frequency Transmission</h1>
+        <div style="float: left;">
+            Input here<br>
+            <input id="phases" value="100" /><br />
+            <textarea id="signal" rows="10" columns="10"></textarea>
+        </div>
+        <div style="float: left; margin: 10px;">
+            <input type="radio" name="inputChoice" value="1" onclick="handleClick(this);"> Example 1<br /><!--after 4 01029498-->
+            <input type="radio" name="inputChoice" value="2" onclick="handleClick(this);"> Example 2<br /><!--after 100 24176176-->
+            <input type="radio" name="inputChoice" value="3" onclick="handleClick(this);"> Example 3<br /><!--after 100 73745418-->
+            <input type="radio" name="inputChoice" value="4" onclick="handleClick(this);"> Example 4<br /><!--after 100 52432133-->
+            <input type="radio" name="inputChoice" value="100" onclick="handleClick(this);" checked> Problem<br />
+            <button onclick="solve()">Solve</button><br />
+        </div>
+        <div style="float:left; border: 1px dashed; margin: 10px; padding: 10px;">
+            <div>
+                Solution problem 1
+                <h3 id="solution"></h3>
+            </div>
+            <div>
+                Solution problem 2
+                <h3 id="solution2"></h3>
+            </div>
+        </div>
+    </div>
+    <script src="16.js"></script>
+</body>
+</html>

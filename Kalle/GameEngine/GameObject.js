@@ -1,0 +1,10 @@
+class GameObject {
+
+    update() {
+
+    }
+
+    draw() {
+
+    }
+}
